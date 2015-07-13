@@ -20,7 +20,13 @@ public class BlackHole {
     return 0;
   }
   
+  /**
+   * The gravitational field at the specified point.
+   */
   public PVector field(PVector point) {
-    
+    PVector direction = point.sub(position);
+    float magnitude = G*mass / direction.magSq();
+    direction.normalize();
+    return direction.mult(magnitude);
   }
 }

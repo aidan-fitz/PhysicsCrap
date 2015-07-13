@@ -6,6 +6,8 @@
  * energy to leave the event horizon and come back to you.
  */
 
+public static final float G = 6.67e-11;
+
 void setup() {
   size(800, 800, P2D);
 }
