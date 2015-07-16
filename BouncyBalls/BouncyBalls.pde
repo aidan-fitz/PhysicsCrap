@@ -11,9 +11,19 @@ void setup() {
 
 void draw() {
   background(192);
-  for (Ball b : ballsack) {
-    b.draw();
-    b.move();
+  // Loop thru all balls
+  for (int i = 0; i < ballsack.size(); i++) {
+    Ball bi = ballsack.get(i);
+    bi.draw();
+    bi.move();
+    // loop thru all balls that come after me
+    // so no two balls collide twice
+    for (int j = i + 1; j < ballsack.size(); j++) {
+      Ball bj = ballsack.get(j);
+      if (bi.overlaps(bj)) {
+        bi.collide(bj);
+      }
+    }
   }
 }
 

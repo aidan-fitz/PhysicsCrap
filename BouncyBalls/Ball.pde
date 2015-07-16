@@ -4,8 +4,6 @@ class Ball {
   PVector pos, vel;
   color c;
 
-  ArrayList<Ball> ballsack;
-
   Ball() {
     this(0, 0);
     setRandomPosition();
@@ -21,7 +19,6 @@ class Ball {
 
   Ball(ArrayList<Ball> ballsack) {
     this(0, 0);
-    this.ballsack = ballsack;
     setRandomPosition(ballsack);
   }
 
@@ -59,27 +56,21 @@ class Ball {
     if (pos.y < radius || pos.y >= height - radius) {
       vel.y = -vel.y;
     }
-    // fire collision events
-    for (Ball b: ballsack) {
-      if (overlaps(b)) {
-        collision(b);
-      }
-    }
   }
-  
+
   // Formula from https://en.wikipedia.org/wiki/Elastic_collision#Two-Dimensional_Collision_With_Two_Moving_Objects
-  void collision(Ball b) {
+  void collide(Ball b) {
     // cache their masses
     float m1 = this.mass(), m2 = b.mass();
     PVector disp = displacement(b);
     // dot product of difference between velocities and displacement
     float yolo = PVector.sub(this.vel, b.vel).dot(disp);
     float distSq = disp.magSq();
-    
+
     // v1' = v1 - m2 * 2/(m1 + m2) * yolo / distSq * disp
     // v2' = v2 + m1 * 2/(m1 + m2) * yolo / distSq * disp
     float swag = 2 * yolo / (distSq * (m1 + m2));
-    
+
     this.vel.sub(PVector.mult(disp, m2 * swag));
     b.vel.add(PVector.mult(disp, m1 * swag));
   }
@@ -92,7 +83,7 @@ class Ball {
   boolean overlaps(Ball b) {
     return this != b && displacement(b).mag() <= this.radius + b.radius;
   }
-  
+
   PVector displacement(Ball b) {
     return PVector.sub(this.pos, b.pos);
   }
